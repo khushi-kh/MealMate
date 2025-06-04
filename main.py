@@ -108,8 +108,8 @@ class NutrientLog(db.Model):
 
 
 #Create Table Schema
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()
 
 # Function to calculate total nutrients
 def calculate_total_nutrients(meal_data):
