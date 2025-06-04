@@ -1,0 +1,46 @@
+{% include 'header.html' %}
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container position-relative">
+                <div class="row justify-content-center">
+                    <div class="col-xl-6">
+                        <div class="text-center">
+                            <!-- Page heading-->
+                            <h1 class="masthead-title" style="color: #2d7232; font-size: 8rem; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.1)">MealMate</h1>
+                            <h2 style="color: #2d7232; font-size: 2rem; font-weight: bold;">Eat Better Smarter Healthier</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Icons Grid-->
+        <section class="features-icons bg-light text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                            <div class="features-icons-icon d-flex"><i class="bi bi-window m-auto text-success" ></i></div>
+                            <a class="stretched-link fw-bold feature-link"  href="{{ url_for('register') }}">Get Meal Recommendations</a>
+                            <p class="lead mb-0">This theme will look great on any device, no matter the size!</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                            <div class="features-icons-icon d-flex"><i class="bi-bullseye m-auto text-success"></i></div>
+                            <a class="stretched-link fw-bold feature-link"  href="{{ url_for('register') }}">Set Your Goals</a>
+                            <p class="lead mb-0">Featuring the latest build of the new Bootstrap 5 framework!</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                            <div class="features-icons-icon d-flex"><i class="bi-bar-chart m-auto text-success"></i></div>
+                            <a class="stretched-link fw-bold feature-link"  href="{{ url_for('register') }}">Track Your Goals</a>
+                            <p class="lead mb-0">Ready to use with your own content, or customize the source files!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer-->
+{% include 'footer.html'%}

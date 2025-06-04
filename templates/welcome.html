@@ -1,0 +1,77 @@
+{% include 'header.html' %}
+<style>
+    .card{
+     position: relative;
+    background: rgba(184, 209, 204, 0.85); /* white with some transparency */
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    width: 100%;
+    max-width: 400px;
+    }
+    .features-icons .card {
+        box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    }
+
+</style>
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container position-relative">
+                <div class="row justify-content-center">
+                    <div class="col-xl-6">
+                        <div class="text-center">
+                            <!-- Page heading-->
+                            <h1 class="masthead-title" style="color: #2d7232; font-size: 8rem; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.1)">Welcome {{current_user.name}}</h1>
+                            <h2 style="color: #2d7232; font-size: 2rem; font-weight: bold;">Eat Better Smarter Healthier</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+       <!-- Icons Grid-->
+        <!-- Icons Grid -->
+<section class="features-icons bg-light text-center py-5">
+    <div class="container">
+        <div class="row justify-content-center gx-4">
+            <!-- Card 1 -->
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch mb-4">
+                <div class="card w-100 shadow-sm">
+                    <div class="features-icons-item text-center p-4">
+                        <div class="features-icons-icon d-flex justify-content-center align-items-center mb-3">
+                            <i class="bi bi-window text-success"></i>
+                        </div>
+                        <a class="stretched-link fw-bold feature-link"  href="{{ url_for('recommendation') }}">Recommend Meals</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch mb-4">
+                <div class="card w-100 shadow-sm">
+                    <div class="features-icons-item text-center p-4">
+                        <div class="features-icons-icon d-flex justify-content-center align-items-center mb-3">
+                            <i class="bi bi-bullseye text-success"></i>
+                        </div>
+                        <a class="stretched-link fw-bold feature-link" href="#!">Goals</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch mb-4">
+                <div class="card w-100 shadow-sm">
+                    <div class="features-icons-item text-center p-4">
+                        <div class="features-icons-icon d-flex justify-content-center align-items-center mb-3">
+                            <i class="bi bi-bar-chart text-success"></i>
+                        </div>
+                        <a class="stretched-link fw-bold feature-link" href="{{url_for('dashboard')}}">Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Footer-->
+{% include 'footer.html'%}

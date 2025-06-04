@@ -1,0 +1,426 @@
+{% include 'header.html' %}
+<style>        main {
+            min-height: 100vh;
+            position: relative;
+            background-image:  url('{{ url_for("static", filename="assets/img/suggestions_bg.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(1deg); }
+            50% { transform: translateY(-20px) rotate(-1deg); }
+            75% { transform: translateY(-5px) rotate(0.5deg); }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.8) 0%, rgba(76, 175, 80, 0.7) 50%, rgba(129, 199, 132, 0.6) 100%);
+            z-index: 1;
+        }
+
+        .overlay-content {
+            position: relative;
+            z-index: 2;
+        }
+
+
+        .image-text {
+            position: relative;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            font-weight: 800;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            user-select: none;
+            text-align: center;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, #ffffff 0%, #e8f5e8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translate(-50%, -30px); opacity: 0; }
+            to { transform: translate(-50%, -50%); opacity: 1; }
+        }
+
+        /* Meal sections */
+        .meal-section {
+            margin-bottom: 4rem;
+            animation: fadeInSection 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        @keyframes fadeInSection {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .meal-section:nth-child(2) { animation-delay: 0.2s; }
+        .meal-section:nth-child(3) { animation-delay: 0.4s; }
+        .meal-section:nth-child(4) { animation-delay: 0.6s; }
+
+        /* Meal type header */
+        .meal-type-card {
+            background: linear-gradient(135deg, #B9D4AA 0%, #DDF6D2 50%, #B9D4AA 100%);
+            color: #393E46;
+            padding: 1.5rem 3rem;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(46, 125, 50, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            
+        }
+
+        .meal-type-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(45deg) translate(-100%, -100%); }
+            50% { transform: rotate(45deg) translate(100%, 100%); }
+            100% { transform: rotate(45deg) translate(-100%, -100%); }
+        }
+
+        .meal-type-card:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(46, 125, 50, 0.5);
+        }
+
+        /* Fallback message */
+        .text-warning {
+            background: linear-gradient(135deg, rgba(194, 48, 7, 0.2) 0%, rgba(209, 33, 9, 0.1) 100%);
+            border: 2px solid rgba(249, 84, 50, 0.4);
+            color: #fff !important;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.2);
+        }
+
+        /* Meal grid */
+        .row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .col-md-4 {
+            width: 100%;
+        }
+
+        /* Meal cards */
+        .meal-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .meal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.1) 0%, rgba(76, 175, 80, 0.1) 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+            z-index: 1;
+        }
+
+        .meal-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .meal-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(46, 125, 50, 0.2);
+            border-color: rgba(76, 175, 80, 0.5);
+        }
+
+        /* Radio button styling */
+        input[type="radio"] {
+            width: 24px;
+            height: 24px;
+            border: 3px solid #4caf50;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            appearance: none;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            z-index: 2;
+        }
+
+        input[type="radio"]:checked {
+            background: #4caf50;
+            border-color: #2e7d32;
+            transform: scale(1.1);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+        }
+
+        input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        input[type="radio"]:checked + label {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        input[type="radio"]:checked ~ .meal-card,
+        input[type="radio"]:checked + label + .meal-card {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.1) 0%, rgba(76, 175, 80, 0.1) 100%);
+            border-color: #4caf50;
+            transform: translateY(-5px) scale(1.03);
+        }
+
+        /* Meal name */
+        .meal-name {
+            margin-left: 1rem;
+            margin-bottom: 0;
+            font-weight: 600;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            color: #333;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        /* Submit button */
+        .btn-success {
+            background: linear-gradient(135deg, #6ec3a4 0%, #4caf50 50%, #66bb6a 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 4rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(46, 125, 50, 0.4);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .btn-success::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-success:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(46, 125, 50, 0.5);
+        }
+
+        .btn-success:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        /* Text center */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-4 {
+            margin-top: 2rem;
+        }
+
+        .mt-5 {
+            margin-top: 3rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 2rem;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .justify-content-center {
+            justify-content: center;
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatParticle 15s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Enhanced meal card layout */
+        .meal-card {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .meal-content {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+        
+        }
+</style>
+    <main class="min-vh-100 d-flex flex-column justify-content-start" style="
+        position: relative;
+        background-image: url_for('/static', );
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    ">
+        <div class="overlay"></div>
+        <div class="overlay-content">
+            <div class="container mt-5">
+                <div class="image-text text-center">Recommended Meals</div>
+
+                <form method="POST" action="{{url_for('results')}}">
+                    {% if suggestions %}
+                        {% for meal_type, meals in suggestions.items() %}
+                            <div class="meal-section">
+                                <div class="d-flex justify-content-center mb-4">
+                                    <div class="meal-type-card text-center py-2 px-4 rounded shadow" style="max-width: 400px;">
+                                        <h4 class="m-0">
+                                            {% if meal_type.lower() == 'breakfast' %}
+                                                <i class="fas fa-sun"></i>
+                                            {% elif meal_type.lower() == 'lunch' %}
+                                                <i class="fas fa-cloud-sun"></i>
+                                            {% elif meal_type.lower() == 'dinner' %}
+                                                <i class="fas fa-moon"></i>
+                                            {% else %}
+                                                <i class="fas fa-utensils"></i>
+                                            {% endif %}
+                                            {{ meal_type.capitalize() }}
+                                        </h4>
+                                    </div>
+                                </div>
+
+                                {% if fallback_msg.get(meal_type) %}
+                                    <p class="text-warning text-center">{{ fallback_msg[meal_type] }}</p>
+                                {% endif %}
+
+                                <div class="row">
+                                    {% for meal in meals %}
+                                        <div class="col-md-4 mb-4">
+                                            <div class="meal-card">
+                                                <input type="radio" 
+                                                    id="{{ meal_type }}_{{ loop.index }}" 
+                                                    name="{{meal_type}}" 
+                                                    value="{{ meal.id }}">
+                                                <label for="{{ meal_type }}_{{ loop.index }}" class="meal-name">{{ meal.name }}</label>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check"></i> Submit Selection
+                            </button>
+                        </div>
+                    {% else %}
+                        <p class="text-center text-muted">No meal suggestions found.</p>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </main>
+
+    {% include 'footer.html' %}

@@ -1,0 +1,44 @@
+<div class="table-container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class=></th>
+                            <th scope="col">Meal Name</th>
+                            <th scope="col">Diet Type</th>
+                            <th scope="col">Calories</th>
+                            <th scope="col">Protein (g)</th>
+                            <th scope="col">Fats (g)</th>
+                            <th scope="col">Carbs (g)</th>
+                            <th scope="col">Fiber (g)</th>
+                            <th scope="col">Sugar (g)</th>
+                            <th scope="col">Iron (mg)</th>
+                            <th scope="col">Sodium (mg)</th>
+                            <th scope="col">Cholesterol (mg)</th>
+                            <th scope="col">Recipe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for meal_type, meal in information.items() %}
+                        <tr>
+                            <th scope="row">{{meal_type.capitalize()}}</th>
+                            <td class="meal-name">{{meal.name}}</td>
+                            <td class="diet-type">{{meal.diet_type}}</td>
+                            <td><span class="nutrition-value">{{meal.calories}}</span></td>
+                            <td><span class="nutrition-value">{{meal.protein}}</span></td>
+                            <td><span class="nutrition-value">{{meal.fats}}</span></td>
+                            <td><span class="nutrition-value">{{meal.carbs}}</span></td>
+                            <td><span class="nutrition-value">{{meal.fiber}}</span></td>
+                            <td><span class="nutrition-value">{{meal.sugar}}</span></td>
+                            <td><span class="nutrition-value">{{meal.iron}}</span></td>
+                            <td><span class="nutrition-value">{{meal.sodium}}</span></td>
+                            <td><span class="nutrition-value">{{meal.cholesterol}}</span></td>
+                            <td>
+                                <a href="{{meal.recipe_link}}" target="_blank" class="recipe-link">View Recipe</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>

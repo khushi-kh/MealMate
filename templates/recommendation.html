@@ -1,0 +1,79 @@
+{% include 'header.html' %}
+<main class="bg-gradient-to-br from-[#C1CFA1] via-[#a7cba4] to-[#2d7232] py-10 px-6 min-h-screen flex items-center justify-center">
+  <section class="card flex flex-col md:flex-row gap-8 max-w-6xl w-full bg-white rounded-3xl shadow-xl p-8">
+    
+    <!-- Form -->
+    <form id="mealmate-form" action="{{ url_for('show_suggestions') }}" method="POST" class="flex-1 flex flex-col gap-10 min-w-[300px]">
+      <h1 id="form-title" class="text-3xl font-bold text-center text-green-900">MealMate Recommends</h1>
+
+      <!-- Diet Type -->
+      <div>
+        <h2 class="text-xl font-semibold mb-2" style="color: #3e5f3f">Select Diet Type(s)</h2>
+        <div class="flex flex-wrap gap-4">
+          <button type="button" data-group="diet" data-value="vegan" class="btn-toggle">Vegan</button>
+          <button type="button" data-group="diet" data-value="veg" class="btn-toggle">Veg</button>
+          <button type="button" data-group="diet" data-value="keto" class="btn-toggle">Keto</button>
+          <button type="button" data-group="diet" data-value="glutenfree" class="btn-toggle">Gluten-Free</button>
+          <button type="button" data-group="diet" data-value="dairyfree" class="btn-toggle">Dairy-Free</button>
+          <button type="button" data-group="diet" data-value="nonveg" class="btn-toggle">Non-Veg</button>
+        </div>
+      </div>
+
+      <!-- Meal Type -->
+      <div>
+        <h2 class="text-xl font-semibold mb-2" style="color: #3e5f3f;">Select Meal Type(s)</h2>
+        <div class="flex flex-wrap gap-4">
+          <button type="button" data-group="meal" data-value="breakfast" class="btn-toggle">Breakfast</button>
+          <button type="button" data-group="meal" data-value="lunch" class="btn-toggle">Lunch</button>
+          <button type="button" data-group="meal" data-value="snack" class="btn-toggle">Snack</button>
+          <button type="button" data-group="meal" data-value="dinner" class="btn-toggle">Dinner</button>
+        </div>
+      </div>
+
+      <!-- Hidden Inputs -->
+      <input type="hidden" name="diet_types" id="diet-types-input">
+      <input type="hidden" name="meal_types" id="meal-types-input">
+
+      <!-- Submit -->
+      <div class="mt-8 flex justify-center">
+        <button class="btn-recommend" type="submit">RECOMMEND</button>
+      </div>
+    </form>
+
+    <!-- Image -->
+    <div class="flex-1 flex justify-center items-center">
+      <img
+        src="https://storage.googleapis.com/a1aa/image/4a21fa78-b535-4b9e-b065-f620dc8caf25.jpg"
+        alt="Colorful healthy meal bowl"
+        class="rounded-full max-w-full max-h-[480px] shadow-lg hover:scale-105 transition-transform duration-300"
+      />
+    </div>
+  </section>
+</main>
+
+<script>
+  // Toggle selection buttons
+  document.querySelectorAll('.btn-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      button.classList.toggle('active');
+    });
+  });
+
+  // Handle form submit
+  document.getElementById('mealmate-form').addEventListener('submit', function (e) {
+    const selectedDiets = [...document.querySelectorAll('.btn-toggle[data-group="diet"].active')].map(btn => btn.dataset.value);
+    const selectedMeals = [...document.querySelectorAll('.btn-toggle[data-group="meal"].active')].map(btn => btn.dataset.value);
+
+    if (selectedDiets.length === 0 || selectedMeals.length === 0) {
+      e.preventDefault(); // prevent submission
+      alert('Please select at least one Diet Type and one Meal Type.');
+      return;
+    }
+
+    // Assign comma-separated string to hidden inputs
+    document.getElementById('diet-types-input').value = selectedDiets.join(',');
+    document.getElementById('meal-types-input').value = selectedMeals.join(',');
+  });
+</script>
+
+{% include 'footer.html' %}
