@@ -10,10 +10,15 @@ from datetime import datetime, date, timedelta
 import random
 from dashboard import PieChart, LineChart, Table, KPI
 import pandas as pd
+import os
+from dotenv import find_dotenv, load_dotenv
+
+dotenv_path = find_dotenv()
+load_dotenv = load_dotenv(dotenv_path)
 
 year = datetime.now().year
 app = Flask(__name__)
-app.secret_key = 'thisissecretkey'
+app.config['secret_key'] = os.environ.get('secret_key')
 Bootstrap(app)
 
 login_manager = LoginManager()
@@ -24,8 +29,7 @@ class Base(DeclarativeBase):
     pass
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///D:/Khushi/Python Practice/Python Projects/MealMate/instance/mealmate_db.db"
-
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', 'sqlite:///D:/Khushi/Python Practice/Python Projects/MealMate/instance/mealmate_db.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(model_class=Base)
