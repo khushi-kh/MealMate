@@ -18,7 +18,7 @@ load_dotenv = load_dotenv(dotenv_path)
 
 year = datetime.now().year
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'fallback-key'
 Bootstrap(app)
 
 login_manager = LoginManager()
